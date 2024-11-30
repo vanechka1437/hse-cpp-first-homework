@@ -396,10 +396,10 @@ void memdb::Database::execute(const std::string &str) {
         throw BadQuery("Bad query: too short query");
     }
 
-    if (tokens[0].value == "create") {
+    if (to_lower(tokens[0].value) == "create") {
         tables.emplace_back(create_table(tokens));
     }
-    else if (tokens[0].value == "insert") {
+    else if (to_lower(tokens[0].value) == "insert") {
 
         if ((tokens.end() - 1)->type == Token::TABLE_NAME) {
             bool flag = false;
@@ -421,7 +421,7 @@ void memdb::Database::execute(const std::string &str) {
             throw BadQuery("Bad query: insert query without table name");
         }
     }
-    else if (tokens[0].value == "select") {
+    else if (to_lower(tokens[0].value) == "select") {
         std::string table_name;
         bool flag = false;
 
@@ -443,7 +443,7 @@ void memdb::Database::execute(const std::string &str) {
             if (token.type == Token::FIELD_NAME) {
                 select_fields.emplace_back(token.value);
             }
-            if (token.value == "from") {
+            if (to_lower(token.value) == "from") {
                 break;
             }
         }
@@ -471,7 +471,7 @@ void memdb::Database::execute(const std::string &str) {
 
         tables.push_back(new_table);
     }
-    else if (tokens[0].value == "delete") {
+    else if (to_lower(tokens[0].value) == "delete") {
         std::string table_name;
         if (tokens[1].type == Token::TABLE_NAME) {
             table_name = tokens[1].value;
